@@ -7,7 +7,7 @@ namespace GitReposWithChangesReport
         public static void Display(GitCheckResult result)
         {
 
-            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.ForegroundColor = ConsoleColor.Gray;
             Console.Write($"{result.FilePath}");
             
             if (result is { HasUnCommitedChanges: false, HasUnpushedCommits: false })

@@ -25,7 +25,8 @@ internal class RunCode
         Console.WriteLine();
         Console.WriteLine("---------------------------------------------------------------------");
         Console.WriteLine();
-        foreach (var result in results.Where(x => x.HasUnCommitedChanges || x.HasUnpushedCommits).ToList())
+        var resultsWithIssues = results.Where(x => x.HasUnCommitedChanges || x.HasUnpushedCommits).ToList();
+        foreach (var result in resultsWithIssues)
         {
             Code.Display(result);
         }
@@ -33,15 +34,15 @@ internal class RunCode
         Console.WriteLine("---------------------------------------------------------------------");
         Console.WriteLine();
 
-        if (results.Count == 0)
+        if (resultsWithIssues.Count == 0)
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Success!!! All repos have been commited.");
         }
         else
         {
-            var unCommitedCount = results.Count(x => x.HasUnCommitedChanges);
-            var unPushedCount = results.Count(x => x.HasUnpushedCommits);
+            var unCommitedCount = resultsWithIssues.Count(x => x.HasUnCommitedChanges);
+            var unPushedCount = resultsWithIssues.Count(x => x.HasUnpushedCommits);
 
             if (unCommitedCount > 0)
             {
