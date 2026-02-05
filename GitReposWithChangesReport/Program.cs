@@ -10,6 +10,13 @@ if (Debugger.IsAttached)
     Console.WriteLine("Debugger attached, running debug path");
     appBaseDirectory = @"V:\GitHub";
 }
+
+Console.WriteLine();
+Console.ForegroundColor = ConsoleColor.Cyan;
+Console.WriteLine("Press any key to continue");
+Console.ResetColor();
+Console.ReadKey();
+Console.WriteLine();
 while (true)
 {
     RunCode.Process(appBaseDirectory);
