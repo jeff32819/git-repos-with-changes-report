@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using System.Net.NetworkInformation;
+// ReSharper disable ConvertIfStatementToSwitchStatement
 
 namespace GitReposWithChangesReport
 {
@@ -11,26 +13,45 @@ namespace GitReposWithChangesReport
 
             foreach (var dir in Directory.GetDirectories(rootFolder, "*", SearchOption.AllDirectories))
             {
-                if (Directory.Exists(Path.Combine(dir, ".git")))
+  
+                var gitFilePath = Path.Combine(dir, ".git");
+                if (!Directory.Exists(gitFilePath))
                 {
-                    var uncommitted = HasUncommittedChanges(dir);
-                    var unpushed = HasUnpushedCommits(dir);
-
-                    if (uncommitted || unpushed)
-                    {
-                        results.Add(new GitCheckResult
-                        {
-                            FilePath = dir,
-                            HasUnCommitedChanges = uncommitted,
-                            HasUnpushedCommits = unpushed
-                        });
-                    }
+                    continue;
                 }
+
+                var result = new GitCheckResult
+                {
+                    FilePath = dir,
+                    HasUnCommitedChanges = HasUncommittedChanges(dir),
+                    HasUnpushedCommits = HasUnpushedCommits(dir)
+                };
+                Code.Display(result);
+                results.Add(result);
             }
 
             return results;
         }
+        /// <summary>
+        /// good code but do not need to use
+        /// </summary>
+        public class TextLen_NOT_USING
+        {
+            public int Length { get; set; } = 0;
 
+            public string Add(string txt)
+            {
+                Length += txt.Length;
+                return txt;
+            }
+
+            public void WritePadding()
+            {
+                var padCount = Console.WindowWidth - 1 - Length;
+                Console.Write(new string(' ', padCount));
+                Console.Write("|");
+            }
+        }
         private static bool HasUncommittedChanges(string repoPath)
         {
             var psi = new ProcessStartInfo
