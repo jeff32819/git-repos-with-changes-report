@@ -1,9 +1,30 @@
-﻿using static GitReposWithChangesReport.GitScanner;
+﻿using System.Diagnostics;
+
+using static GitReposWithChangesReport.GitScanner;
 // ReSharper disable ConvertIfStatementToSwitchStatement
 namespace GitReposWithChangesReport
 {
     internal class Code
     {
+        public static void AutoContinue(string message, int seconds)
+        {
+            Console.WriteLine(message);
+            Stopwatch sw = Stopwatch.StartNew();
+            TimeSpan limit = TimeSpan.FromSeconds(seconds);
+
+            // Loop until a key is pressed OR the time runs out
+            while (sw.Elapsed < limit && !Console.KeyAvailable)
+            {
+                // Optional: Small delay to be kind to the CPU
+                Thread.Sleep(100);
+            }
+
+            // If a key was pressed, "consume" it so it doesn't leak into the next input
+            if (Console.KeyAvailable)
+            {
+                Console.ReadKey(intercept: true);
+            }
+        }
         public static void Display(GitCheckResult result)
         {
 

@@ -13,9 +13,9 @@ if (Debugger.IsAttached)
 
 Console.WriteLine();
 Console.ForegroundColor = ConsoleColor.Cyan;
-Console.WriteLine("Press any key to continue");
+Code.AutoContinue("Press any key to continue (auto-continuing in 3 seconds)...", 3);
 Console.ResetColor();
-Console.ReadKey();
+
 Console.WriteLine();
 while (true)
 {
