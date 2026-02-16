@@ -62,7 +62,7 @@ internal class RunCode
         Console.WriteLine();
         Console.ForegroundColor = ConsoleColor.Cyan;
         Console.WriteLine("Press any key to run again");
-        Console.ResetColor();
+        Code.ReadSingleKey();
         Console.ReadKey();
     }
 }
