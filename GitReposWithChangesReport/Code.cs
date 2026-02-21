@@ -47,6 +47,7 @@ namespace GitReposWithChangesReport
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write(" - SUCCESS");
                 Console.WriteLine();
+                Console.ResetColor();
                 return;
             }
             if (result.HasUnCommitedChanges)

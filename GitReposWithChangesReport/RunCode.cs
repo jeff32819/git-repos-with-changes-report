@@ -2,10 +2,10 @@
 
 internal class RunCode
 {
-    public static void Process(string appBaseDirectory)
+    public static void Process(List<string> gitFolders)
     {
         Console.WriteLine();
-        Console.WriteLine($"Scanning base folder: {appBaseDirectory}");
+        Console.WriteLine($"Scanning {gitFolders.Count} git folders...");
         Console.WriteLine();
         Console.ForegroundColor = ConsoleColor.Magenta;
         Console.WriteLine("This may take a few monents");
@@ -14,7 +14,7 @@ internal class RunCode
         Console.WriteLine("---------------------------------------------------------------------");
         Console.WriteLine();
         Console.CursorVisible = false;
-        var results = GitScanner.Scan(appBaseDirectory);
+        var results = GitScanner.Scan(gitFolders);
         Console.CursorVisible = true;
         Console.ResetColor();
         Console.WriteLine();

@@ -6,23 +6,31 @@ namespace GitReposWithChangesReport;
 
 public static class GitScanner
 {
-    public static List<GitCheckResult> Scan(string rootFolder)
+    public static List<GitCheckResult> Scan(List<string> gitFolders)
     {
         var results = new List<GitCheckResult>();
-
-        foreach (var dir in Directory.GetDirectories(rootFolder, "*", SearchOption.AllDirectories))
+        var index = 0;
+        var totalString = gitFolders.Count.ToString().PadLeft(3);
+        foreach (var dir in gitFolders)
         {
-            var gitFilePath = Path.Combine(dir, ".git");
-            if (!Directory.Exists(gitFilePath))
-            {
-                continue;
-            }
+            var indexText = index.ToString().PadLeft(3);
+            var pct = ((index + 1) * 100.0 / gitFolders.Count);
+            var pctText = ((int)Math.Round(pct)).ToString().PadLeft(3);
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write($"{indexText} / {totalString} ({pctText}% ) ");
+            Console.ResetColor();
 
+            var parentFolder = Directory.GetParent(dir);
+            if (parentFolder == null)
+            {
+                throw new Exception("parentFolder is null, should never happen");
+            }
+            index++;
             var result = new GitCheckResult
             {
-                FilePath = dir,
-                HasUnCommitedChanges = HasUncommittedChanges(dir),
-                HasUnpushedCommits = HasUnpushedCommits(dir)
+                FilePath = parentFolder.FullName,
+                HasUnCommitedChanges = HasUncommittedChanges(parentFolder.FullName),
+                HasUnpushedCommits = HasUnpushedCommits(parentFolder.FullName)
             };
             Code.Display(result);
             results.Add(result);
@@ -84,26 +92,5 @@ public static class GitScanner
         var behind = int.Parse(parts[0]);
         var ahead = int.Parse(parts[1]);
         return ahead > 0;
-    }
-
-    /// <summary>
-    ///     good code but do not need to use
-    /// </summary>
-    public class TextLen_NOT_USING
-    {
-        public int Length { get; set; }
-
-        public string Add(string txt)
-        {
-            Length += txt.Length;
-            return txt;
-        }
-
-        public void WritePadding()
-        {
-            var padCount = Console.WindowWidth - 1 - Length;
-            Console.Write(new string(' ', padCount));
-            Console.Write("|");
-        }
     }
 }
