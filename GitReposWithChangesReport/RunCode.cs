@@ -61,8 +61,26 @@ internal class RunCode
         Console.ResetColor();
         Console.WriteLine();
         Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.WriteLine("Press any key to run again");
-        Code.ReadSingleKey();
+        Console.WriteLine("Press r for targetframefwork report or any key to run again");
+        var key = Code.ReadSingleKey();
+        if (key.Key != ConsoleKey.R)
+        {
+            return;
+        }
+
+        var code = new Code();
+        var reportFilePath = code.ProjectTargetFrameworkReport();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.ForegroundColor = ConsoleColor.DarkYellow;
+        Console.WriteLine($"Target framework report saved as:");
+        Console.WriteLine();
+        Console.WriteLine(reportFilePath);
+        Console.WriteLine();
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine("Press any key to continue...");
+        Console.ResetColor();
+        Console.WriteLine();
         Console.ReadKey();
     }
 }
