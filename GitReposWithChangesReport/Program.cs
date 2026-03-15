@@ -17,6 +17,33 @@ var rootFolders = new List<string>
     @"V:\GitLab"
 };
 
+
+
+var foldersWithoutGit = new FoldersWithoutGitFolder(rootFolders);
+if(foldersWithoutGit.Folders.Count > 0)
+{
+    Console.WriteLine("Folders without .git folder:");
+    Console.ForegroundColor = ConsoleColor.Yellow;
+    foreach (var folder in foldersWithoutGit.Folders)
+    {
+        Console.WriteLine($" - {folder}");
+    }
+    Console.ResetColor();
+    Console.WriteLine();
+    Console.WriteLine("-------------------------------------");
+    Console.WriteLine("Delete folders without a .git folder? press Y to confirm, any other key to continue");
+    var key = Console.ReadKey();
+    if (key.Key == ConsoleKey.Y)
+    {
+        if (foldersWithoutGit.Delete())
+        {
+            Console.WriteLine("Errors found press any key to continue");
+            Console.ReadKey();
+        }
+    }
+}
+Console.WriteLine();
+
 Console.WriteLine("Folders being checked for changes:");
 foreach (var folder in rootFolders)
 {
