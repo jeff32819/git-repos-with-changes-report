@@ -107,6 +107,8 @@ namespace GitReposWithChangesReport
             Console.ForegroundColor = ConsoleColor.Gray;
             
             var sb = new StringBuilder();
+            sb.AppendLine("<html>");
+            sb.AppendLine("<head>");
             sb.AppendLine("<style>");
             sb.AppendLine("  /* This targets all rows in all tables */");
             sb.AppendLine("  tr:hover {");
@@ -116,6 +118,10 @@ namespace GitReposWithChangesReport
             sb.AppendLine("  }");
             sb.AppendLine(" body{ font-family:lucida console; } ");
             sb.AppendLine("</style>");
+            sb.AppendLine("</head>");
+            sb.AppendLine("<body>");
+            sb.AppendLine($@"<h3>Updated: {DateTime.UtcNow:MM/dd/yyyy HH:mm:ss}</h3>");
+            sb.AppendLine(@"<h5>Created with: V:\GitHub\Jeff32819\git-repos-with-changes-report</h5>");
             sb.AppendLine("<table cellpadding=\"3\" border=\"1\">");
             var list = Code.GetProjectFrameworks(@"V:\GitHub\Jeff32819");
             Console.WriteLine($"count = {list.Count}");
@@ -125,6 +131,9 @@ namespace GitReposWithChangesReport
                 Console.WriteLine($"{item.Value,-17} - {item.Key}");
             }
             sb.AppendLine("</table>");
+            sb.AppendLine("</body>");
+            sb.AppendLine("</html>");
+
             const string filePath = @"V:\GitHub\project-targetframework-report.html";
             File.WriteAllText(filePath, sb.ToString());
             return filePath;
